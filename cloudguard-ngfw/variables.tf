@@ -25,12 +25,12 @@ variable "mp_listing_id" {
 }
 
 variable "mp_listing_resource_id" {
-  default     = "ocid1.image.oc1..aaaaaaaagsapm5pdqheoqp3zwfktwtykvdzwlnx4k42ijc45kat3vg7hsfeq"
+  default     = "ocid1.image.oc1..aaaaaaaaaqicewqn7rj44bvjv6blskmtxg7u3kwsinlb4adxkcmpje737xea"
   description = "Marketplace Listing Image OCID"
 }
 
 variable "mp_listing_resource_version" {
-  default     = "R81_rev1.0"
+  default     = "R81.20_JHF65_rev2.0"
   description = "Marketplace Listing Package/Resource Version"
 }
 
@@ -100,7 +100,7 @@ variable "vcn_dns_label" {
   default     = "simple"
 }
 
-variable "subnet_type" {
+variable "subnet1_type" {
   description = "Choose between private and public subnets"
   default     = "Use Public Subnet"
 }
@@ -110,18 +110,37 @@ variable "subnet_span" {
   default     = "Regional Subnet"
 }
 
-variable "subnet_id" {
+variable "subnet1_id" {
   default = ""
 }
 
-variable "subnet_display_name" {
+variable "subnet1_display_name" {
   description = "Subnet Name"
   default     = "frontend-subnet"
 }
 
-variable "subnet_cidr_block" {
+variable "subnet1_cidr_block" {
   description = "Subnet CIDR"
   default     = "10.0.0.0/24"
+}
+
+variable "subnet2_type" {
+  description = "Choose between private and public subnets"
+  default     = "Use Private Subnet"
+}
+
+variable "subnet2_id" {
+  default = ""
+}
+
+variable "subnet2_display_name" {
+  description = "Subnet Name"
+  default     = "backend-subnet"
+}
+
+variable "subnet2_cidr_block" {
+  description = "Subnet CIDR"
+  default     = "10.0.1.0/24"
 }
 
 variable "subnet_dns_label" {
@@ -140,7 +159,6 @@ variable "compute_compartment_ocid" {
 variable "network_compartment_ocid" {
   description = "Compartment where Network resources will be created"
 }
-
 
 variable "nsg_whitelist_ip" {
   description = "Network Security Groups - Whitelisted CIDR block for ingress communication: Enter 0.0.0.0/0 or <your IP>/32"
@@ -178,7 +196,44 @@ variable "template_name" {
 
 variable "template_version" {
   description = "Template version"
-  default = "20200104"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type    = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  type = string
+  default = "gateway"
+}
+
+variable "os_version" {
+  type = string
+  default = "R8120"
+}
+
+variable "hostname" {
+  type = string
+  description = "(Optional) Security Gateway prompt hostname"
+  default = ""
+}
+
+variable "admin_password_hash" {
+  description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
+  type = string
+}
+
+variable "maintenance_mode_password_hash" {
+  description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
+  type = string
+}
+
+variable "enable_metrics" {
+  description = "Enable CloudGuard metrics in order to send statuses and statistics collected from instances to the OCI Monitor service."
+  type = string
+  default = "true"
 }
 
 ######################
