@@ -13,10 +13,11 @@ resource "oci_core_instance" "simple-vm" {
   }
 
   create_vnic_details {
-    subnet_id        = local.use_existing_network ? var.subnet_id : oci_core_subnet.public_subnet[0].id
-    display_name     = var.vm_display_name
-    assign_public_ip = true
-    nsg_ids          = [oci_core_network_security_group.nsg.id]
+    subnet_id              = local.use_existing_network ? var.subnet_id : oci_core_subnet.public_subnet[0].id
+    display_name           = var.vm_display_name
+    assign_public_ip       = true
+    nsg_ids                = [oci_core_network_security_group.nsg.id]
+    skip_source_dest_check = true
   }
 
   source_details {
@@ -31,10 +32,17 @@ resource "oci_core_instance" "simple-vm" {
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("scripts/cloud-init.sh",{
-      allow_upload_download=var.allow_upload_download   
-      template_name = var.template_name
-      template_version = var.template_version
-      shell = var.shell
+      installation_type              = var.installation_type
+      template_name                  = var.template_name
+      template_version               = var.template_version
+      template_type                  = var.template_type
+      admin_shell                    = var.shell
+      allow_upload_download          = var.allow_upload_download
+      password_hash                  = local.password_hash
+      os_version                     = var.os_version
+      host_name                      = var.hostname
+      management_gui_client_network  = var.management_gui_client_network
+      maintenance_mode_password_hash = var.maintenance_mode_password_hash
     }))
   }
   instance_options {

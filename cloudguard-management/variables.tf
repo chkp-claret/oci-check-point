@@ -25,12 +25,12 @@ variable "mp_listing_id" {
 }
 
 variable "mp_listing_resource_id" {
-  default     = "ocid1.image.oc1..aaaaaaaauxrx6p2kifkp2ex4hndeqdhjr7teoqmdgtco7kmbv6ebldbvpeyq"
+  default     = "ocid1.image.oc1..aaaaaaaatwqxaa42mr23jjumxihug45vlw5p5pcb6wgrphqbyf7pkhpwezzq"
   description = "Marketplace Listing Image OCID"
 }
 
 variable "mp_listing_resource_version" {
-  default     = "R81_rev1.1"
+  default     = "R81.20_rev2025.02.25"
   description = "Marketplace Listing Package/Resource Version"
 }
 
@@ -141,7 +141,6 @@ variable "network_compartment_ocid" {
   description = "Compartment where Network resources will be created"
 }
 
-
 variable "nsg_whitelist_ip" {
   description = "Network Security Groups - Whitelisted CIDR block for ingress communication: Enter 0.0.0.0/0 or <your IP>/32"
   default     = "0.0.0.0/0"
@@ -174,7 +173,46 @@ variable "template_name" {
 
 variable "template_version" {
   description = "Template version"
-  default = "20200104"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  description = "Installation type"
+  type = string
+  default = "management"
+}
+
+variable "os_version" {
+  description = "GAIA OS version"
+  type = string
+  default = "R8120"
+}
+
+variable "management_gui_client_network" {
+  description = "Allowed GUI clients - GUI clients network CIDR"
+  type = string
+  default = "0.0.0.0/0"
+}
+
+variable "hostname" {
+  type = string
+  description = "(Optional) Security Management Server prompt hostname"
+  default = ""
+}
+
+variable "admin_password_hash" {
+  description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
+  type = string
+}
+
+variable "maintenance_mode_password_hash" {
+  description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
+  type = string
 }
 
 ######################
