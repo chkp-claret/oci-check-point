@@ -4,7 +4,6 @@ resource "oci_core_instance" "ha-vms" {
 
   availability_domain = ( var.availability_domain_name != "" ? var.availability_domain_name : ( length(data.oci_identity_availability_domains.ads.availability_domains) == 1 ? data.oci_identity_availability_domains.ads.availability_domains[0].name : data.oci_identity_availability_domains.ads.availability_domains[count.index].name))
 
-
   compartment_id      = var.compute_compartment_ocid
   display_name        = "${var.vm_display_name}-${count.index + 1}"
   shape               = var.vm_compute_shape
@@ -31,17 +30,24 @@ resource "oci_core_instance" "ha-vms" {
   }
 
   launch_options {
-    network_type = length(local.is_flex_shape) > 0 ? var.instance_launch_options_network_type : "PARAVIRTUALIZED"
+    network_type = var.instance_launch_options_network_type
   }
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("scripts/cloud-init.sh",{
-      allow_upload_download=var.allow_upload_download   
-      template_name = var.template_name
-      template_version = var.template_version
-      sic_key = var.sic_key
-      shell = var.shell
+      installation_type              = var.installation_type
+      template_name                  = var.template_name
+      template_version               = var.template_version
+      template_type                  = var.template_type
+      admin_shell                    = var.shell
+      sic_key                        = var.sic_key
+      allow_upload_download          = var.allow_upload_download
+      password_hash                  = local.password_hash
+      os_version                     = var.os_version
+      host_name                      = var.hostname
+      enable_metrics                 = var.enable_metrics
+      maintenance_mode_password_hash = var.maintenance_mode_password_hash
     }))
   }
 

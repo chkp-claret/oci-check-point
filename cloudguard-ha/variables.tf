@@ -24,14 +24,13 @@ variable "mp_listing_id" {
   description = "Marketplace Listing OCID"
 }
 
-
 variable "mp_listing_resource_id" {
-  default     = "ocid1.image.oc1..aaaaaaaafms4hyju5vjrloutauk4dgnln64xyxz5l33o6spduve2pdefnpdq"
+  default     = "ocid1.image.oc1..aaaaaaaaaqicewqn7rj44bvjv6blskmtxg7u3kwsinlb4adxkcmpje737xea"
   description = "Marketplace Listing Image OCID"
 }
 
 variable "mp_listing_resource_version" {
-  default     = "R81.10_with_JHF_45"
+  default     = "R81.20_JHF65_rev2.0"
   description = "Marketplace Listing Package/Resource Version"
 }
 
@@ -103,6 +102,41 @@ variable "vcn_dns_label" {
 variable "subnet_span" {
   description = "Choose between regional and AD specific subnets"
   default     = "Regional Subnet"
+}
+
+variable "domain_description" {
+  description = "The domain description"
+  default = "cloudguard-domain"
+}
+    
+variable "domain_display_name" {
+  description = "The mutable display name of the domain"
+  default = "cloudguard-domain"
+}
+
+variable "domain_license_type" {
+  description = "The License type of the Domain"
+  default = "Free"
+}
+
+variable "dynamic_group_description" {
+  description = "Dynamic Group to Support CloudGuard HA"
+  default     = "Dynamic Group to Support CloudGuard HA"
+}
+
+variable "dynamic_group_name" {
+  description = "Dynamic Group Name"
+  default     = "cloudguard-ha-dynamic-group"
+}
+
+variable "dynamic_group_policy_description" {
+  description = "Dynamic Group Policy to allow CloudGuard HA floating IP switch"
+  default     = "Dynamic Group Policy for CloudGuard HA"
+}
+
+variable "dynamic_group_policy_name" {
+  description = "Dynamic Group Policy Check Point"
+  default     = "cloudguard-ha-dynamic-group-policy"
 }
 
 variable "public_subnet_id" {
@@ -196,7 +230,44 @@ variable "template_name" {
 
 variable "template_version" {
   description = "Template version"
-  default = "20200104"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type    = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  type = string
+  default = "cluster"
+}
+
+variable "os_version" {
+  type = string
+  default = "R8120"
+}
+
+variable "hostname" {
+  type = string
+  description = "(Optional) Security Gateway prompt hostname"
+  default = ""
+}
+
+variable "admin_password_hash" {
+  description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
+  type = string
+}
+
+variable "maintenance_mode_password_hash" {
+  description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
+  type = string
+}
+
+variable "enable_metrics" {
+  description = "Enable CloudGuard metrics in order to send statuses and statistics collected from instances to the OCI Monitor service."
+  type = string
+  default = "true"
 }
 
 ######################

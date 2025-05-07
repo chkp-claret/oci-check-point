@@ -1,17 +1,18 @@
 #!/bin/bash
 
-ftw_password=$(curl_cli --silent http://169.254.169.254/opc/v1/instance/id)
+installation_type=$1
+template_name=$2
+template_version=$3
+template_type=$4
+admin_shell=$5
+sic_key=$6
+allow_upload_download=$7
+password_hash=$8
+os_version=$9
+host_name=${10}
+enable_metrics=${11}
+maintenance_mode_password_hash=${12}
 
-echo "template_name: ${template_name}" >> /etc/cloud-version
-echo "template_version: ${template_version}" >> /etc/cloud-version
+python3 /etc/cloud_config.py "installationType='${installation_type}'" "passwordHash='${password_hash}'" "sicKey='${sic_key}'" "osVersion='${os_version}'" "allowUploadDownload='${allow_upload_download}'" "templateName='${template_name}'" "templateVersion='${template_version}'" "templateType='${template_type}'" "hostName='${host_name}'" "shell='${admin_shell}'" "enableMetrics='${enable_metrics}'" "MaintenanceModePassword='${maintenance_mode_password_hash}'"
 
-clish -c "set user admin shell '${shell}'" -s
-
-blink_conf="gateway_cluster_member=true"
-blink_conf="$blink_conf&ftw_sic_key=${sic_key}"
-blink_conf="$blink_conf&download_info=${allow_upload_download}"
-blink_conf="$blink_conf&upload_info=${allow_upload_download}"
-blink_conf="$blink_conf&admin_password_regular=$ftw_password"
-blink_conf="$blink_conf&reboot_if_required=true"
-
-blink_config -s "$blink_conf"
+touch /etc/finished_user_data

@@ -1,3 +1,8 @@
+# ------ Get Network Compartment Name for Policies
+data "oci_identity_compartment" "network_compartment" {
+  id = var.network_compartment_ocid
+}
+
 data "oci_identity_availability_domain" "ad" {
   compartment_id = var.tenancy_ocid
   ad_number      = var.availability_domain_number
