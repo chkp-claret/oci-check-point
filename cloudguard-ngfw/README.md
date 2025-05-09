@@ -2,6 +2,10 @@
 
 This folder contains all assets for deploying Check Point R81.20 Security Gateway with Gaia 3.10 - BYOL from Oracle Cloud Infrastructure Marketplace.
 
+There are two options for deployment:
+- Create a new network with a public and private subnet to launch the gateways into
+- Launch the gateways into an existing network
+
 ## How to use Terraform CLI
 
 1. Make sure you have terraform v0.12+ cli installed and accessible from your terminal.
@@ -10,7 +14,7 @@ This folder contains all assets for deploying Check Point R81.20 Security Gatewa
 terraform -v
 ```
 
-![](./images/tf-version.png)
+![](../images/tf-version.png)
 
 2. Update default variable values on [variables.tf](./variables.tf). At least *Compute Configuration* sections should be updated.
 
@@ -62,7 +66,7 @@ This gives the following output:
 terraform init
 ```
 
-![terraform init](./images/tf-init.png)
+![terraform init](../images/tf-init.png)
 
 5. Now you should run a plan to make sure everything looks good:
 
@@ -71,7 +75,7 @@ terraform plan
 ```
 
 That gives:
-![terraform plan](./images/tf-plan1.png)
+![terraform plan](../images/tf-plan1.png)
 
 6. Finally, if everything is good, you can go ahead and run `apply`:
 
@@ -80,13 +84,13 @@ terraform apply # will prompt to continue
 ```
 
 The output of `terraform apply` should look like:
-![terraform plan](./images/tf-apply1.png)
+![terraform plan](../images/tf-apply1.png)
 
 
 7. You now can connect via SSH or HTTPS through the public IP address of the Instance.
 
 8. If you want to destroy the resources previously created. Run `terraform destroy`.
-![terraform plan](./images/tf-destroy.png)
+![terraform plan](../images/tf-destroy.png)
 
 9. Finally, you can modify and extend the existing code based on your needs.
 
@@ -108,19 +112,19 @@ terraform init
 
 This gives the following output:
 
-![terraform init](./images/tf-init-orm.png)
+![terraform init](../images/tf-init-orm.png)
 
 5. Now, you can go ahead and run `terraform apply`. That will generate orm.zip in `build-orm/dist` folder :
-![terraform plan](./images/tf-apply-orm.png)
+![terraform plan](../images/tf-apply-orm.png)
 
 You can run `unzip -l dist/orm.zip` and confirm the content of the zip file:
 
-![terraform plan](./images/unzip-l.png)
+![terraform plan](../images/unzip-l.png)
 
 6. Alternatively, you can specify a different path to store the zip file by specifying a variable argument `save_to` during apply: `terraform apply -var="save_to"="path/to/zip"`
  
 7. Finally, Create a Stack on OCI Resource Manager, configure all the variables and launch it.
-![terraform plan](./images/oci-rm.png)
+![terraform plan](../images/oci-rm.png)
 
 ## GitHub Action Workflow - Automated Packaging
 
