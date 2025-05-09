@@ -23,10 +23,8 @@ For example:
 
 $ ssh –i id_rsa admin@${oci_core_instance.simple-vm.public_ip}
 
-3. Set the user password for the administrator. Enter the command: set user admin password
-4. Save the configuration. Enter the command: save config
-
-After saving the password, hen connect to https://${oci_core_instance.simple-vm.public_ip} using a browser to finalize the configuration.
+4. In a web browser, connect to the Gaia Portal: https://${oci_core_instance.simple-vm.public_ip}
+5. For additional details follow the documentation.
 
 EOT
 }
