@@ -116,7 +116,7 @@ variable "template_name" {
 
 variable "template_version" {
   type    = string
-  default = "20200104"
+  default = "20250509"
 }
 
 variable "template_type" {
