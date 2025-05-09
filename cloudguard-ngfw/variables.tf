@@ -100,46 +100,36 @@ variable "vcn_dns_label" {
   default     = "simple"
 }
 
-variable "subnet1_type" {
-  description = "Choose between private and public subnets"
-  default     = "Use Public Subnet"
-}
-
 variable "subnet_span" {
   description = "Choose between regional and AD specific subnets"
   default     = "Regional Subnet"
 }
 
-variable "subnet1_id" {
+variable "public_subnet_id" {
   default = ""
 }
 
-variable "subnet1_display_name" {
-  description = "Subnet Name"
-  default     = "frontend-subnet"
+variable "public_subnet_display_name" {
+  description = "Public Subnet Name"
+  default     = "public-subnet"
 }
 
-variable "subnet1_cidr_block" {
-  description = "Subnet CIDR"
+variable "public_subnet_cidr_block" {
+  description = "Public Subnet CIDR"
   default     = "10.0.0.0/24"
 }
 
-variable "subnet2_type" {
-  description = "Choose between private and public subnets"
-  default     = "Use Private Subnet"
-}
-
-variable "subnet2_id" {
+variable "private_subnet_id" {
   default = ""
 }
 
-variable "subnet2_display_name" {
-  description = "Subnet Name"
-  default     = "backend-subnet"
+variable "private_subnet_display_name" {
+  description = "Private Subnet Name"
+  default     = "private-subnet"
 }
 
-variable "subnet2_cidr_block" {
-  description = "Subnet CIDR"
+variable "private_subnet_cidr_block" {
+  description = "Private Subnet CIDR"
   default     = "10.0.1.0/24"
 }
 

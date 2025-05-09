@@ -14,7 +14,7 @@ resource "oci_core_instance" "simple-vm" {
   }
 
   create_vnic_details {
-    subnet_id              = local.use_existing_network ? var.subnet1_id : oci_core_subnet.public_subnet[0].id
+    subnet_id              = local.use_existing_network ? var.public_subnet_id : oci_core_subnet.public_subnet[0].id
     display_name           = var.vm_display_name
     assign_public_ip       = true
     nsg_ids                = [oci_core_network_security_group.nsg.id]
@@ -58,7 +58,7 @@ resource "oci_core_vnic_attachment" "add_vnic" {
     assign_public_ip       = false
     display_name           = "Secondary"
     skip_source_dest_check = true
-    subnet_id              = local.use_existing_network ? var.subnet2_id : oci_core_subnet.private_subnet[0].id
+    subnet_id              = local.use_existing_network ? var.private_subnet_id : oci_core_subnet.private_subnet[0].id
   }
   instance_id  = oci_core_instance.simple-vm.id
 }

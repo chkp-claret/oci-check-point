@@ -31,8 +31,8 @@ resource "oci_core_subnet" "public_subnet" {
   count                      = local.use_existing_network ? 0 : 1
   compartment_id             = var.network_compartment_ocid
   vcn_id                     = oci_core_vcn.vcn[count.index].id
-  cidr_block                 = var.subnet1_cidr_block
-  display_name               = var.subnet1_display_name
+  cidr_block                 = var.public_subnet_cidr_block
+  display_name               = var.public_subnet_display_name
   route_table_id             = oci_core_route_table.frontend_route_table[0].id
   dns_label                  = var.subnet_dns_label
   prohibit_public_ip_on_vnic = "false"
@@ -42,7 +42,7 @@ resource "oci_core_subnet" "private_subnet" {
   count                      = local.use_existing_network ? 0 : 1
   compartment_id             = var.network_compartment_ocid
   vcn_id                     = oci_core_vcn.vcn[count.index].id
-  cidr_block                 = var.subnet2_cidr_block
-  display_name               = var.subnet2_display_name
+  cidr_block                 = var.private_subnet_cidr_block
+  display_name               = var.private_subnet_display_name
   prohibit_internet_ingress  = true
 }
