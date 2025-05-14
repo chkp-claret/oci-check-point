@@ -104,41 +104,6 @@ variable "subnet_span" {
   default     = "Regional Subnet"
 }
 
-variable "domain_description" {
-  description = "The domain description"
-  default = "cloudguard-domain"
-}
-    
-variable "domain_display_name" {
-  description = "The mutable display name of the domain"
-  default = "cloudguard-domain"
-}
-
-variable "domain_license_type" {
-  description = "The License type of the Domain"
-  default = "Free"
-}
-
-variable "dynamic_group_description" {
-  description = "Dynamic Group to Support CloudGuard HA"
-  default     = "Dynamic Group to Support CloudGuard HA"
-}
-
-variable "dynamic_group_name" {
-  description = "Dynamic Group Name"
-  default     = "cloudguard-ha-dynamic-group"
-}
-
-variable "dynamic_group_policy_description" {
-  description = "Dynamic Group Policy to allow CloudGuard HA floating IP switch"
-  default     = "Dynamic Group Policy for CloudGuard HA"
-}
-
-variable "dynamic_group_policy_name" {
-  description = "Dynamic Group Policy Check Point"
-  default     = "cloudguard-ha-dynamic-group-policy"
-}
-
 variable "public_subnet_id" {
   default = ""
 }

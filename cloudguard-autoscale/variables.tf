@@ -1,3 +1,9 @@
+#Variables declared in this file must be declared in the marketplace.yaml
+
+############################
+#  Hidden Variable Group   #
+############################
+
 variable "tenancy_ocid" {
   type    = string
 }
@@ -6,13 +12,9 @@ variable "region" {
   type = string
 }
 
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
+############################
+#  Marketplace Image      #
+############################
 
 variable "mp_subscription_enabled" {
   description = "Subscribe to Marketplace listing?"
@@ -35,9 +37,9 @@ variable "mp_listing_resource_version" {
   description = "Marketplace Listing Package/Resource Version"
 }
 
-variable "ssh_public_key" {
-  type = string
-}
+############################
+#  Compute Configuration   #
+############################
 
 variable "vm_compute_shape" {
   type    = string
@@ -58,6 +60,34 @@ variable "availability_domain_number" {
   default     = 1
   description = "OCI Availability Domains: 1,2,3  (subject to region availability)"
 }
+
+variable "ssh_public_key" {
+  type = string
+}
+
+variable "scale_max" {
+  type = number
+  default = 2
+}
+
+variable "scale_min" {
+  type = number
+  default = 1
+}
+
+variable "scale_out_threshold" {
+  type = number
+  default = 80
+}
+
+variable "scale_in_threshold" {
+  type = number
+  default = 20
+}
+
+############################
+#  Network Configuration   #
+############################
 
 variable "network_strategy" {
   default = "Create New VCN and Subnet"
@@ -97,12 +127,24 @@ variable "private_subnet_id" {
 
 variable "private_subnet_display_name" {
   description = "Subnet Name"
-  default     = "frontend-subnet"
+  default     = "backend-subnet"
 }
 
 variable "private_subnet_cidr_block" {
   description = "Subnet CIDR"
   default     = "10.0.1.0/24"
+}
+
+############################
+# Additional Configuration #
+############################
+
+variable "compute_compartment_ocid" {
+  description = "Compartment where Compute and Marketplace subscription resources will be created"
+}
+
+variable "network_compartment_ocid" {
+  description = "Compartment where Network resources will be created"
 }
 
 variable "sic_key" {
@@ -183,25 +225,9 @@ variable "enable_metrics" {
   default = "true"
 }
 
-variable "scale_max" {
-  type = number
-  default = 2
-}
-
-variable "scale_min" {
-  type = number
-  default = 1
-}
-
-variable "scale_out_threshold" {
-  type = number
-  default = 80
-}
-
-variable "scale_in_threshold" {
-  type = number
-  default = 20
-}
+######################
+#    Enum Values     #   
+######################
 
 variable "network_strategy_enum" {
   type = map 

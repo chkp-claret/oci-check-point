@@ -58,7 +58,7 @@ resource "oci_core_instance_configuration" "as_instance_config" {
 resource "oci_core_instance_pool" "as_instance_pool" {
   compartment_id            = var.compute_compartment_ocid
   instance_configuration_id = oci_core_instance_configuration.as_instance_config.id
-   display_name   = "${var.project_name}-instance-pool"
+  display_name   = "${var.project_name}-instance-pool"
   placement_configurations {
     availability_domain = (var.availability_domain_name != "" ? var.availability_domain_name : data.oci_identity_availability_domain.ad.name)
 
@@ -85,7 +85,7 @@ resource "oci_core_instance_pool" "as_instance_pool" {
 }
 
 resource "oci_autoscaling_auto_scaling_configuration" "as_auto_scaling_configuration" {
-   display_name   = "${var.project_name}-autoscaling-config"
+  display_name   = "${var.project_name}-autoscaling-config"
   auto_scaling_resources {
     id   = oci_core_instance_pool.as_instance_pool.id
     type = "instancePool"

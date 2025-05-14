@@ -139,7 +139,7 @@ variables:
 
   vm_compute_shape:
     type: oci:core:instanceshape:name
-    default: "VM.Standard.E4.Flex"
+    default: "VM.Standard.E5.Flex"
     title: Compute Shape
     required: true
     dependsOn:
@@ -150,7 +150,7 @@ variables:
     visible:
       eq:
         - vm_compute_shape
-        - "VM.Standard.E4.Flex"
+        - "VM.Standard.E5.Flex"
     type: integer
     default: 2
     title: Flex Shape OCPUs
