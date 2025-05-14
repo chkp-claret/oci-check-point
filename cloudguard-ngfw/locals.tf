@@ -8,7 +8,8 @@ locals {
   listing_resource_id      = var.mp_listing_resource_id
   listing_resource_version = var.mp_listing_resource_version
 
-  is_flex_shape = var.vm_compute_shape == "VM.Standard.E5.Flex" ? [var.vm_flex_shape_ocpus]:[]
+  supported_flex_shapes = ["VM.Standard.E3.Flex", "VM.Standard.E4.Flex", "VM.Optimized3.Flex", "VM.Standard3.Flex", "VM.Standard.E5.Flex"]
+  is_flex_shape = contains(local.supported_flex_shapes, var.vm_compute_shape) ? [var.vm_flex_shape_ocpus]:[]
 
   password_hash = replace(var.admin_password_hash, "$", "\\$")
 }
