@@ -16,49 +16,14 @@ terraform -v
 
 ![](../images/tf-version.png)
 
-2. Update default variable values on [variables.tf](./variables.tf). At least *Compute Configuration* sections should be updated.
 
-Here is the snippet of the `variables.tf` file.
+2. You can use the boilerplate available on [terraform.tfvars.template](terraform.tfvars.template) to set up the OCI provider variables or overwrite the variables values defined on [variables.tf](./variables.tf). Rename the file to `terraform.tfvars` so that Terraform CLI can automatically pick it up as the default variables configuration.
 
-```hcl
-############################
-#  Marketplace Image      #
-############################
+You can also define all default values directly on [variables.tf](./variables.tf). However, variables that you want users to specify the value during runtime or you don't want the value persisted on a version control system (as it may contains sensitive data), you can make use of environment variables or typically, terraform.tfvars file.
 
-variable "mp_listing_id" {
-  default = "ocid1.appcataloglisting.oc1.."
-  description = "Marketplace - Listing OCID"
-}
+Note: See the [Inputs](#inputs) section for all the variables description.
 
-variable "mp_listing_resource_id" {
-  default = "ocid1.image.oc1.."
-  description = "Marketplace - Image OCID"
-}
-
-variable "mp_listing_resource_version" {
-  default = "1.0"
-  description = "Marketplace - Package Version Reference"
-}
-
-############################
-#  Compute Configuration   #
-############################
-
-variable "vm_display_name" {
-  description = "Instance Name"
-  default     = "simple"
-}
-
-variable "vm_compute_shape" {
-  description = "Compute Shape"
-  default     = "VM.Standard2.2" //2 cores
-}
-```
-
-3. You can define all default values directly on [variables.tf](./variables.tf). However, variables that you want users to specify the value during runtime or you don't want the value persisted on a version control system (as it may contains sensitive data), you can make use of environment variables or typically, terraform.tfvars file.
-You can use the boilerplate available on [terraform.tfvars.template](terraform.tfvars.template) to setup the OCI provider variables or overwrite the variables values defined on [variables.tf](./variables.tf). Rename the file to `terraform.tfvars` so that Terraform CLI can automatically pick it up as the default variables configuration.
-
-4. Initialize your template.
+3. Initialize your template.
 
 This gives the following output:
 
@@ -68,7 +33,7 @@ terraform init
 
 ![terraform init](../images/tf-init.png)
 
-5. Now you should run a plan to make sure everything looks good:
+4. Now you should run a plan to make sure everything looks good:
 
 ```bash
 terraform plan
@@ -77,7 +42,7 @@ terraform plan
 That gives:
 ![terraform plan](../images/tf-plan1.png)
 
-6. Finally, if everything is good, you can go ahead and run `apply`:
+5. Finally, if everything is good, you can go ahead and run `apply`:
 
 ```
 terraform apply # will prompt to continue
@@ -87,12 +52,12 @@ The output of `terraform apply` should look like:
 ![terraform plan](../images/tf-apply1.png)
 
 
-7. You now can connect via SSH or HTTPS through the public IP address of the Instance.
+6. You now can connect via SSH or HTTPS through the public IP address of the Instance.
 
-8. If you want to destroy the resources previously created. Run `terraform destroy`.
+7. If you want to destroy the resources previously created. Run `terraform destroy`.
 ![terraform plan](../images/tf-destroy.png)
 
-9. Finally, you can modify and extend the existing code based on your needs.
+8. Finally, you can modify and extend the existing code based on your needs.
 
 ## How to use build-orm
 
@@ -104,7 +69,7 @@ The output of `terraform apply` should look like:
 
 3. Update [Marketplace schema](./marketplace.yaml) template file that exposes the variables to end users on ORM. More information related to Marketplace schema is available [here](https://github.com/oracle-quickstart/oci-quickstart/blob/master/Marketplace%20Stack%20Schema.md)
 
-3. Initialize your template.
+4. Initialize your template in [build-orm](./build-orm).
 
 ```bash
 terraform init
@@ -114,7 +79,7 @@ This gives the following output:
 
 ![terraform init](../images/tf-init-orm.png)
 
-5. Now, you can go ahead and run `terraform apply`. That will generate check-point-autoscale.zip in `resource-manager` folder :
+5. Now, you can go ahead and run `terraform apply`. That will generate check-point-autoscale.zip in the `resource-manager` folder :
 ![terraform plan](../images/tf-apply-orm.png)
 
 You can run `unzip -l resource-manager/check-point-autoscale.zip` and confirm the content of the zip file:
@@ -126,22 +91,44 @@ You can run `unzip -l resource-manager/check-point-autoscale.zip` and confirm th
 7. Finally, Create a Stack on OCI Resource Manager, configure all the variables and launch it.
 ![terraform plan](../images/oci-rm.png)
 
-## GitHub Action Workflow - Automated Packaging
-
-This project uses [GitHub Action Workflow](https://github.com/features/actions) that automatically generates a OCI Resource Manager Stack everytime there is a code change. A new ORM Stack file is hosted under GitHub Releases as a draft. Publishers can modify each Release individually or change the parameters at [ORM Stack](.github/workflows/build-orm-stack.yml) workflow Create Release step to make it public to everyone.
-
-```yaml
- - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - New ORM Stack template ${{ github.ref }}
-          draft: true
-          prerelease: true
-```
+## Inputs
+| Name                           | Description                                                                      | Type   | Allowed Values           | Default | Required |
+| ------------------------------ | -------------------------------------------------------------------------------- | ------ | ------------------------ | ------- | -------- |
+| user_ocid                      | OCID of the user calling the API                                                 | string | "ocid1.user.oc1..."      | N/A     | yes      |
+| fingerprint                    | Fingerprint for the public key that was added to this user                       | string |                          | N/A     | yes      |
+| private_key_path               | The path to your downloaded private API key file                                 | string |                          | N/A     | yes      |
+| tenancy_ocid                   | OCID of your tenancy                                                             | string | "ocid1.tenancy.oc1..."   | N/A     | yes      |
+| region                         | An Oracle Cloud Infrastructure region                                            | string | See [Regions](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/regions.htm#top) | N/A | yes |
+| compute_compartment_ocid       | Compartment where Compute and Marketplace subscription resources will be created | string | "ocid1.compartment.oc1..." | N/A     | yes      |
+| vm_compute_shape               | The shape of the instance                                                        | string | "VM.Standard2.2" <br/> "VM.Standard2.4" <br/> "VM.Standard2.8" <br/> "VM.Standard2.16" <br/> "VM.Standard2.24" <br/> "VM.Standard.E3.Flex" <br/> "VM.Standard.E4.Flex" <br/> "VM.Optimized3.Flex" <br/> "VM.Standard3.Flex" <br/> "VM.Standard.E5.Flex" <br/> | "VM.Standard2.2" | yes |
+| vm_flex_shape_ocpus            | Only for Flex Shapes. The total number of OCPUs available to the instance.       | number |                          | 1       | no       |
+| availability_domain_name       | The name of the availability domain                                              | string | Ex: "Uocm:PHX-AD-1"      | N/A     | no       |
+| availability_domain_number     | (Required if availability_domain_name is not provided) <br/> OCI Availability Domains: 1,2,3 (subject to region availability) | string | "1" <br/> "2" <br/> "3" <br/> | "1" | yes |
+| ssh_public_key                 | Public SSH Key to access VM via SSH. It should start with ssh-rsa.               | string | "ssh-rsa ..."            | N/A     | yes      |
+| scale_min                      | The minimum number of instances that should be in the instance pool              | number |                          | 1       | yes      |
+| scale_max                      | The maximum number of instances that should be in the instance pool              | number |                          | 2       | yes      |
+| scale_in_threshold             | Scale in CPU threshold percentage                                                | number |                          | 20      | yes      |
+| scale_out_threshold            | Scale out CPU threshold percentage                                               | number |                          | 80      | yes      |
+| network_compartment_ocid       | Compartment where Network resources will be created                              | string | "ocid1.compartment.oc1..." | N/A     | yes      |
+| network_strategy               | Either create new VCN and Subnet or use existing                                 | string | "Create New VCN and Subnet" or "Use Existing VCN and Subnet" | "Create New VCN and Subnet" | yes |
+| vcn_id                         | (Existing VCN) OCID of VCN                                                       | string | "ocid1.vcn.oc1..."       | N/A     | no       | 
+| vcn_display_name               | (Create new VCN) Name of VCN                                                     | string |              | "cloudguard-autoscale-vcn" | no |
+| vcn_cidr_block                 | (Create new VCN) VCN CIDR                                                        | string |                          | "10.0.0.0/16" | yes |
+| public_subnet_id               | (Existing subnet) OCID of public subnet                                          | string | "ocid1.subnet.oc1..."    | N/A     | no       |
+| public_subnet_display_name     | (Create new subnet) Name of public subnet                                        | string |                          | "frontend-subnet" | no |
+| public_subnet_cidr_block       | (Create new subnet) Public subnet CIDR                                           | string |                          | "10.0.0.0/24" | yes |
+| private_subnet_id              | (Existing subnet) OCID of existing private subnet                                | string | "ocid1.subnet.oc1..."    | N/A     | no       |
+| private_subnet_display_name    | (Create new subnet) Name of private subnet                                       | string |                          | "backend-subnet" | no |
+| private_subnet_cidr_block      | (Create new subnet) Private subnet CIDR                                          | string |                          | "10.0.1.0/24" | yes |
+| allow_upload_download          | Automatically download Blade Contracts and other important data. Improve product experience by sending data to Check Point | string | "true" or "false" |  "true" | yes |
+| shell                          | Change the admin shell to enable advanced command line configuration             | string | "/etc/cli.sh" <br/> "/bin/bash" <br/> "/bin/csh" <br/> "/bin/tcsh" <br/> | "/etc/cli.sh" | yes |
+| sic_key                        | The Secure Internal Communication key creates trusted connections between Check Point components. Trust is required to install policies on gateways and to send logs between gateways and management servers. | string | Only alphanumeric characters are allowed, and the value must be 12-30 characters long | N/A | yes |
+| project_name                   | All resources created in this stack will be tagged with this name                | string |                          | N/A     | yes |
+| host_name                      | Name for the shell on the machines                                               | string |                          |         | no       |
+| admin_password_hash            | GW password hashed using MD5 based BSD password algorithm. Can be generated using 'openssl passwd -1 <my_password>' | string | | N/A | yes |
+| maintenance_mode_password_hash | Maintenance mode password hash. Can be generated by running 'grub2-mkpasswd-pbkdf2' | string | "grub..."             | N/A     | yes |
+| mgmt_name                      | Name of the Existing Management with CME. Must exactly match the name configured in CME on the Security Management Server | string | | N/A | yes |
+| configuration_template         | Name of the Template for this stack. Must exactly match the name configured in CME on the Security Management Server | string | | N/A | yes |
+| mgmt_interface                 | Management interface that will be used                                           | string | "eth0" or "eth1"         | "eth0"  | yes      |
+| mgmt_ip                        | Indicates if management interface is using its public IP or private IP to connect | string | "public" or "private"   | "public" | yes     |
+| enable_metrics                 | Enable CloudGuard metrics in order to send statuses and statistics collected from instances to the OCI Monitor service | string | "true" or "false" | "true" | yes |

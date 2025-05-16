@@ -10,7 +10,36 @@ variable "region" {
 }
 
 ############################
-#  Marketplace Image      #
+#  Template Information    #
+############################
+
+variable "template_name" {
+  description = "Template name. Should be defined according to deployment type"
+  default = "ha"
+}
+
+variable "template_version" {
+  description = "Template version"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type    = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  type = string
+  default = "cluster"
+}
+
+variable "os_version" {
+  type = string
+  default = "R8120"
+}
+
+############################
+#  Marketplace Image       #
 ############################
 
 variable "mp_subscription_enabled" {
@@ -37,6 +66,10 @@ variable "mp_listing_resource_version" {
 ############################
 #  Compute Configuration   #
 ############################
+
+variable "compute_compartment_ocid" {
+  description = "Compartment where Compute and Marketplace subscription resources will be created"
+}
 
 variable "vm_display_name" {
   description = "Instance Name"
@@ -76,6 +109,10 @@ variable "instance_launch_options_network_type" {
 #  Network Configuration   #
 ############################
 
+variable "network_compartment_ocid" {
+  description = "Compartment where Network resources will be created"
+}
+
 variable "network_strategy" {
   default = "Create New VCN and Subnet"
 }
@@ -97,11 +134,6 @@ variable "vcn_cidr_block" {
 variable "vcn_dns_label" {
   description = "VCN DNS Label"
   default     = "ha"
-}
-
-variable "subnet_span" {
-  description = "Choose between regional and AD specific subnets"
-  default     = "Regional Subnet"
 }
 
 variable "public_subnet_id" {
@@ -137,17 +169,14 @@ variable "private_subnet_cidr_block" {
   default     = "10.0.1.0/24"
 }
 
+variable "use_existing_ip" {
+  description = "Use an existing permanent public ip"
+  default     = "Create new IP"
+}
+
 ############################
 # Additional Configuration #
 ############################
-
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
 
 variable "nsg_whitelist_ip" {
   description = "Network Security Groups - Whitelisted CIDR block for ingress communication: Enter 0.0.0.0/0 or <your IP>/32"
@@ -159,19 +188,9 @@ variable "nsg_display_name" {
   default     = "cluster-security-group"
 }
 
-variable "public_routetable_display_name" {
-  description = "Public route table Name"
-  default     = "public-route-table"
-}
-
 variable "private_routetable_display_name" {
   description = "Private route table Name"
   default     = "private-route-table"
-}
-
-variable "use_existing_ip" {
-  description = "Use an existing permanent public ip"
-  default     = "Create new IP"
 }
 
 variable "allow_upload_download" {
@@ -188,37 +207,6 @@ variable "sic_key" {
   description = "The Secure Internal Communication key creates trusted connections between Check Point components. Choose a random string consisting of at least 12 alphanumeric characters"
 }
 
-variable "template_name" {
-  description = "Template name. Should be defined according to deployment type"
-  default = "ha"
-}
-
-variable "template_version" {
-  description = "Template version"
-  default = "20250423"
-}
-
-variable "template_type" {
-  type    = string
-  default = "terraform"
-}
-
-variable "installation_type" {
-  type = string
-  default = "cluster"
-}
-
-variable "os_version" {
-  type = string
-  default = "R8120"
-}
-
-variable "hostname" {
-  type = string
-  description = "(Optional) Security Gateway prompt hostname"
-  default = ""
-}
-
 variable "admin_password_hash" {
   description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
   type = string
@@ -227,6 +215,12 @@ variable "admin_password_hash" {
 variable "maintenance_mode_password_hash" {
   description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
   type = string
+}
+
+variable "hostname" {
+  type = string
+  description = "(Optional) Security Gateway prompt hostname"
+  default = ""
 }
 
 variable "enable_metrics" {
@@ -245,21 +239,3 @@ variable "network_strategy_enum" {
     USE_EXISTING_VCN_SUBNET = "Use Existing VCN and Subnet"
   }
 }
-
-variable "subnet_type_enum" {
-  type = map
-  default = {
-    PRIVATE_SUBNET = "Private Subnet"
-    PUBLIC_SUBNET  = "Public Subnet"
-  }
-}
-
-variable "nsg_config_enum" {
-  type = map
-  default = {
-    BLOCK_ALL_PORTS = "Block all ports"
-    OPEN_ALL_PORTS  = "Open all ports"
-    CUSTOMIZE       = "Customize ports - Post deployment"
-  }
-}
-

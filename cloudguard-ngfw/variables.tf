@@ -10,6 +10,35 @@ variable "region" {
 }
 
 ############################
+#  Template Information    #
+############################
+
+variable "template_name" {
+  description = "Template name. Should be defined according to deployment type"
+  default = "single"
+}
+
+variable "template_version" {
+  description = "Template version"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type    = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  type = string
+  default = "gateway"
+}
+
+variable "os_version" {
+  type = string
+  default = "R8120"
+}
+
+############################
 #  Marketplace Image      #
 ############################
 
@@ -38,6 +67,10 @@ variable "mp_listing_resource_version" {
 ############################
 #  Compute Configuration   #
 ############################
+
+variable "compute_compartment_ocid" {
+  description = "Compartment where Compute and Marketplace subscription resources will be created"
+}
 
 variable "vm_display_name" {
   description = "Instance Name"
@@ -77,6 +110,10 @@ variable "instance_launch_options_network_type" {
 #  Network Configuration   #
 ############################
 
+variable "network_compartment_ocid" {
+  description = "Compartment where Network resources will be created"
+}
+
 variable "network_strategy" {
   default = "Create New VCN and Subnet"
 }
@@ -98,11 +135,6 @@ variable "vcn_cidr_block" {
 variable "vcn_dns_label" {
   description = "VCN DNS Label"
   default     = "simple"
-}
-
-variable "subnet_span" {
-  description = "Choose between regional and AD specific subnets"
-  default     = "Regional Subnet"
 }
 
 variable "public_subnet_id" {
@@ -142,14 +174,6 @@ variable "subnet_dns_label" {
 # Additional Configuration #
 ############################
 
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
-
 variable "nsg_whitelist_ip" {
   description = "Network Security Groups - Whitelisted CIDR block for ingress communication: Enter 0.0.0.0/0 or <your IP>/32"
   default     = "0.0.0.0/0"
@@ -158,11 +182,6 @@ variable "nsg_whitelist_ip" {
 variable "nsg_display_name" {
   description = "Network Security Groups - Name"
   default     = "gateway-security-group"
-}
-
-variable "routetable_display_name" {
-  description = "Route table Name"
-  default     = "simple-route-table"
 }
 
 variable "allow_upload_download" {
@@ -177,31 +196,6 @@ variable "shell" {
 
 variable "sic_key" {
   description = "The Secure Internal Communication key creates trusted connections between Check Point components. Choose a random string consisting of at least 12 alphanumeric characters"
-}
-
-variable "template_name" {
-  description = "Template name. Should be defined according to deployment type"
-  default = "single"
-}
-
-variable "template_version" {
-  description = "Template version"
-  default = "20250423"
-}
-
-variable "template_type" {
-  type    = string
-  default = "terraform"
-}
-
-variable "installation_type" {
-  type = string
-  default = "gateway"
-}
-
-variable "os_version" {
-  type = string
-  default = "R8120"
 }
 
 variable "hostname" {
@@ -236,21 +230,3 @@ variable "network_strategy_enum" {
     USE_EXISTING_VCN_SUBNET = "Use Existing VCN and Subnet"
   }
 }
-
-variable "subnet_type_enum" {
-  type = map 
-  default = { 
-    PRIVATE_SUBNET = "Private Subnet"
-    PUBLIC_SUBNET  = "Public Subnet"
-  }
-}
-
-variable "nsg_config_enum" {
-  type = map 
-  default = { 
-    BLOCK_ALL_PORTS = "Block all ports"
-    OPEN_ALL_PORTS  = "Open all ports"
-    CUSTOMIZE       = "Customize ports - Post deployment"
-  }
-}
-

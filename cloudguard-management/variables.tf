@@ -3,6 +3,7 @@
 ############################
 #  Hidden Variable Group   #
 ############################
+
 variable "tenancy_ocid" {
 }
 
@@ -10,7 +11,38 @@ variable "region" {
 }
 
 ############################
-#  Marketplace Image      #
+#  Template Information    #
+############################
+
+variable "template_name" {
+  description = "Template name. Should be defined according to deployment type"
+  default = "management"
+}
+
+variable "template_version" {
+  description = "Template version"
+  default = "20250423"
+}
+
+variable "template_type" {
+  type = string
+  default = "terraform"
+}
+
+variable "installation_type" {
+  description = "Installation type"
+  type = string
+  default = "management"
+}
+
+variable "os_version" {
+  description = "GAIA OS version"
+  type = string
+  default = "R8120"
+}
+
+############################
+#  Marketplace Image       #
 ############################
 
 variable "mp_subscription_enabled" {
@@ -34,10 +66,13 @@ variable "mp_listing_resource_version" {
   description = "Marketplace Listing Package/Resource Version"
 }
 
-
 ############################
 #  Compute Configuration   #
 ############################
+
+variable "compute_compartment_ocid" {
+  description = "Compartment where Compute and Marketplace subscription resources will be created"
+}
 
 variable "vm_display_name" {
   description = "Instance Name"
@@ -77,6 +112,10 @@ variable "instance_launch_options_network_type" {
 #  Network Configuration   #
 ############################
 
+variable "network_compartment_ocid" {
+  description = "Compartment where Network resources will be created"
+}
+
 variable "network_strategy" {
   default = "Create New VCN and Subnet"
 }
@@ -87,7 +126,7 @@ variable "vcn_id" {
 
 variable "vcn_display_name" {
   description = "VCN Name"
-  default     = "vcn"
+  default     = "cloudguard-mgmt-vcn"
 }
 
 variable "vcn_cidr_block" {
@@ -98,16 +137,6 @@ variable "vcn_cidr_block" {
 variable "vcn_dns_label" {
   description = "VCN DNS Label"
   default     = "management"
-}
-
-variable "subnet_type" {
-  description = "Choose between private and public subnets"
-  default     = "Use Public Subnet"
-}
-
-variable "subnet_span" {
-  description = "Choose between regional and AD specific subnets"
-  default     = "Regional Subnet"
 }
 
 variable "subnet_id" {
@@ -133,14 +162,6 @@ variable "subnet_dns_label" {
 # Additional Configuration #
 ############################
 
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
-
 variable "nsg_whitelist_ip" {
   description = "Network Security Groups - Whitelisted CIDR block for ingress communication: Enter 0.0.0.0/0 or <your IP>/32"
   default     = "0.0.0.0/0"
@@ -149,11 +170,6 @@ variable "nsg_whitelist_ip" {
 variable "nsg_display_name" {
   description = "Network Security Groups - Name"
   default     = "management-security-group"
-}
-
-variable "routetable_display_name" {
-  description = "Route table Name"
-  default     = "route-table"
 }
 
 variable "allow_upload_download" {
@@ -166,45 +182,6 @@ variable "shell" {
   default     = "/etc/cli.sh"
 }
 
-variable "template_name" {
-  description = "Template name. Should be defined according to deployment type"
-  default = "management"
-}
-
-variable "template_version" {
-  description = "Template version"
-  default = "20250423"
-}
-
-variable "template_type" {
-  type = string
-  default = "terraform"
-}
-
-variable "installation_type" {
-  description = "Installation type"
-  type = string
-  default = "management"
-}
-
-variable "os_version" {
-  description = "GAIA OS version"
-  type = string
-  default = "R8120"
-}
-
-variable "management_gui_client_network" {
-  description = "Allowed GUI clients - GUI clients network CIDR"
-  type = string
-  default = "0.0.0.0/0"
-}
-
-variable "hostname" {
-  type = string
-  description = "(Optional) Security Management Server prompt hostname"
-  default = ""
-}
-
 variable "admin_password_hash" {
   description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
   type = string
@@ -213,6 +190,18 @@ variable "admin_password_hash" {
 variable "maintenance_mode_password_hash" {
   description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
   type = string
+}
+
+variable "hostname" {
+  type = string
+  description = "(Optional) Security Management Server prompt hostname"
+  default = ""
+}
+
+variable "management_gui_client_network" {
+  description = "Allowed GUI clients - GUI clients network CIDR"
+  type = string
+  default = "0.0.0.0/0"
 }
 
 ######################
@@ -225,21 +214,3 @@ variable "network_strategy_enum" {
     USE_EXISTING_VCN_SUBNET = "Use Existing VCN and Subnet"
   }
 }
-
-variable "subnet_type_enum" {
-  type = map 
-  default = { 
-    PRIVATE_SUBNET = "Private Subnet"
-    PUBLIC_SUBNET  = "Public Subnet"
-  }
-}
-
-variable "nsg_config_enum" {
-  type = map 
-  default = { 
-    BLOCK_ALL_PORTS = "Block all ports"
-    OPEN_ALL_PORTS  = "Open all ports"
-    CUSTOMIZE       = "Customize ports - Post deployment"
-  }
-}
-

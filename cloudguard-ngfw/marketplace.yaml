@@ -31,8 +31,6 @@ variableGroups:
       - mp_subscription_enabled
       - availability_domain_number 
       - network_strategy_enum
-      - subnet_type_enum
-      - nsg_config_enum
       - template_name
       - template_version
       - instance_launch_options_network_type
@@ -57,7 +55,6 @@ variableGroups:
       - vcn_display_name 
       - vcn_cidr_block 
       - vcn_dns_label            
-      - subnet_span 
       - public_subnet_id
       - public_subnet_display_name      
       - public_subnet_cidr_block    
@@ -69,8 +66,7 @@ variableGroups:
   - title: "Additional Configuration"
     variables:
       - nsg_whitelist_ip 
-      - nsg_display_name 
-      - routetable_display_name       
+      - nsg_display_name      
       - allow_upload_download
       - shell
       - sic_key
@@ -193,20 +189,6 @@ variables:
       - "Use Existing VCN and Subnet"
     required: true
     default: "Create New VCN and Subnet"
-
-  subnet_span:
-    visible: #($network_strategy  == ""Create New VCN and Subnet"")
-      eq:
-        - network_strategy 
-        - "Create New VCN and Subnet"
-    type: enum
-    title: Subnet Span
-    description: Choose between regional and AD specific subnets
-    enum:
-      - "Regional Subnet"
-      - "AD Specific Subnet"
-    required: true
-    default: "Regional Subnet"
 
   vcn_display_name:
     visible: #($network_strategy  == ""Create New VCN and Subnet"")
@@ -353,13 +335,6 @@ variables:
     default: ngfw-network-security-group
     title: Network Security Group
     description: The name of the Network Security Group
-
-  routetable_display_name:
-    type: string
-    required: true
-    default: my-route-table
-    title: Route Table
-    description: The name of the Route Table
 
   allow_upload_download:
     type: enum

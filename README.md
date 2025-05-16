@@ -8,15 +8,19 @@ This repo is under active development.  Building open source software is a commu
 
 ## How this project is organized
 
-This project contains multiple solutions. Each solution folder is structured in at least 3 modules:
+This project contains multiple solutions. 
 
-- [simple-cli](simple-cli): launch a simple VM that subscribes to a Marketplace Image running from Terraform CLI.
-- [simple-orm](simple-orm): Package cloudguard-ngfw template in OCI [Resource Manager Stack](https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Tasks/managingstacksandjobs.htm) format.
-- [terraform-modules](terraform-modules): contains a list of re-usable terraform modules for managing infrastructure resources like vcn, subnets, security, etc.
+- [cloudguard-autoscale](cloudguard-autoscale): Deploy a Check Point Autoscale solution
+- [cloudguard-ha](cloudguard-ha): Deploy a Check Point High Availability Cluster
+- [cloudguard-management](cloudguard-management): Deploy a Check Point Management
+- [cloudguard-ngfw](cloudguard-ngfw): Deploy a Check Point Gateway
+
+Each solution folder has the following module:
+- build-orm: Packages the solution template in OCI [Resource Manager Stack](https://docs.cloud.oracle.com/iaas/Content/ResourceManager/Tasks/managingstacksandjobs.htm) format.
 
 ## Prerequisites
 
-First off we'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
+First off we'll need to do some predeploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
 
 
 ## How to use these templates

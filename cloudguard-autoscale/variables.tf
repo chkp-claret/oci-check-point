@@ -13,7 +13,31 @@ variable "region" {
 }
 
 ############################
-#  Marketplace Image      #
+#  Template Information    #
+############################
+
+variable "template_name" {
+  type    = string
+  default = "autoscale"
+}
+
+variable "template_version" {
+  type    = string
+  default = "20250509"
+}
+
+variable "template_type" {
+  type    = string
+  default = "terraform"
+}
+
+variable "os_version" {
+  type = string
+  default = "R8120"
+}
+
+############################
+#  Marketplace Image       #
 ############################
 
 variable "mp_subscription_enabled" {
@@ -41,6 +65,10 @@ variable "mp_listing_resource_version" {
 #  Compute Configuration   #
 ############################
 
+variable "compute_compartment_ocid" {
+  description = "Compartment where Compute and Marketplace subscription resources will be created"
+}
+
 variable "vm_compute_shape" {
   type    = string
   default = "VM.Standard2.2"
@@ -65,19 +93,14 @@ variable "ssh_public_key" {
   type = string
 }
 
-variable "scale_max" {
-  type = number
-  default = 2
-}
-
 variable "scale_min" {
   type = number
   default = 1
 }
 
-variable "scale_out_threshold" {
+variable "scale_max" {
   type = number
-  default = 80
+  default = 2
 }
 
 variable "scale_in_threshold" {
@@ -85,9 +108,18 @@ variable "scale_in_threshold" {
   default = 20
 }
 
+variable "scale_out_threshold" {
+  type = number
+  default = 80
+}
+
 ############################
 #  Network Configuration   #
 ############################
+
+variable "network_compartment_ocid" {
+  description = "Compartment where Network resources will be created"
+}
 
 variable "network_strategy" {
   default = "Create New VCN and Subnet"
@@ -139,31 +171,9 @@ variable "private_subnet_cidr_block" {
 # Additional Configuration #
 ############################
 
-variable "compute_compartment_ocid" {
-  description = "Compartment where Compute and Marketplace subscription resources will be created"
-}
-
-variable "network_compartment_ocid" {
-  description = "Compartment where Network resources will be created"
-}
-
-variable "sic_key" {
+variable "allow_upload_download" {
   type    = string
-}
-
-variable "template_name" {
-  type    = string
-  default = "autoscale"
-}
-
-variable "template_version" {
-  type    = string
-  default = "20250509"
-}
-
-variable "template_type" {
-  type    = string
-  default = "terraform"
+  default = "true"
 }
 
 variable "shell" {
@@ -171,24 +181,8 @@ variable "shell" {
   default = "/bin/bash"
 }
 
-variable "os_version" {
-  type = string
-  default = "R8120"
-}
-
-variable "admin_password_hash" {
-  description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
-  type = string
-}
-
-variable "maintenance_mode_password_hash" {
-  description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
-  type = string
-}
-
-variable "allow_upload_download" {
+variable "sic_key" {
   type    = string
-  default = "true"
 }
 
 variable "project_name" {
@@ -200,6 +194,16 @@ variable "host_name" {
   type = string
   description = "(Optional) Security Gateway prompt hostname"
   default = ""
+}
+
+variable "admin_password_hash" {
+  description = "Admin user's password hash (use command 'openssl passwd -1 <PASSWORD>' to get the PASSWORD's hash)"
+  type = string
+}
+
+variable "maintenance_mode_password_hash" {
+  description = "Maintenance mode password hash, relevant only for R81.20 and higher versions. Use the command 'grub2-mkpasswd-pbkdf2'"
+  type = string
 }
 
 variable "mgmt_name" {
